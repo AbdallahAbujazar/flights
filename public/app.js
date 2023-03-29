@@ -3,7 +3,7 @@ const flightList = document.querySelector('#flight-list');
 
 searchForm.addEventListener('submit', event => {
   event.preventDefault();
-  
+
   const from = searchForm.elements.from.value;
   const to = searchForm.elements.to.value;
   const date = searchForm.elements.date.value;
@@ -17,23 +17,35 @@ async function searchFlights(from, to, date) {
     const flights = await response.json();
 
     if (flights.length === 0) {
-      flightList.innerHTML = `<p>No flights found for ${from} to ${to} on ${date}</p>`;
+      const message = document.createElement('p');
+      message.textContent = `No flights found for ${from} to ${to} on ${date}`;
+      flightList.innerHTML = '';
+      flightList.appendChild(message);
       return;
     }
 
-    let flightHtml = '';
+    flightList.innerHTML = '';
     flights.forEach(flight => {
-      flightHtml += `
-        <div>
-          <h2>${flight.airline} Flight ${flight.flightNumber}</h2>
-          <p>Departure: ${flight.departureAirport} (${flight.departureTime})</p>
-          <p>Arrival: ${flight.arrivalAirport} (${flight.arrivalTime})</p>
-        </div>
-      `;
+      const flightDiv = document.createElement('div');
+      const flightHeading = document.createElement('h2');
+      const flightDeparture = document.createElement('p');
+      const flightArrival = document.createElement('p');
+
+      flightHeading.textContent = `${flight.airline} Flight ${flight.flightNumber}`;
+      flightDeparture.textContent = `Departure: ${flight.departureAirport} (${flight.departureTime})`;
+      flightArrival.textContent = `Arrival: ${flight.arrivalAirport} (${flight.arrivalTime})`;
+
+      flightDiv.appendChild(flightHeading);
+      flightDiv.appendChild(flightDeparture);
+      flightDiv.appendChild(flightArrival);
+
+      flightList.appendChild(flightDiv);
     });
-    flightList.innerHTML = flightHtml;
   } catch (error) {
     console.log(error);
-    flightList.innerHTML = '<p>An error occurred while searching for flights. Please try again later.</p>';
+    const message = document.createElement('p');
+    message.textContent = 'An error occurred while searching for flights. Please try again later.';
+    flightList.innerHTML = '';
+    flightList.appendChild(message);
   }
 }

@@ -93,6 +93,7 @@
     "minimatch": "^3.1.2",
     "ms": "^2.0.0",
     "negotiator": "^0.6.3",
+    "node-fetch": "^3.3.1",
     "node-skyscanner-live": "^4.0.2",
     "nodemon": "^2.0.22",
     "nopt": "^1.0.10",
